@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ejercicio 1</title>
+  </head>
+
+  <body>
+    <div>
+      <div style="width: 60%; margin: 0 auto">
+        <h2>Escríbenos !!!</h2>
+        <div class="resultado" style="color: rgb(2, 67, 2); font-style: italic"></div>
+        <form id="formulario">
+          <div>
+            <div style="display: flex; flex-direction: column">
+              <label> Nombre completo </label>
+              <input id="nombre" type="text" placeholder="Ingresa Tú Nombre" />
+              <p class="errorNombre" style="color: red; font-style: italic"></p>
+            </div>
+            <div style="display: flex; flex-direction: column">
+              <label> Asunto </label>
+              <input id="asunto" type="text" placeholder="Asunto"/>
+              <p class="errorAsunto" style="color: red; font-style: italic"></p>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column">
+            <label> Mensaje </label>
+            <textarea id="mensaje" placeholder="Ingresa Tú Mensaje"></textarea>
+            <p class="errorMensaje" style="color: red; font-style: italic"></p>
+          </div>
+          <div>
+            <button id="botton" type="submit">Envíar mensaje</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script>
+      // Escríbe aquí tu código
+
+      /* enciende un zapo que escucha el documento por un evento submit */
+      document.addEventListener("submit", (evento) => {
+        /* previene el evento natural del submit */
+        evento.preventDefault();
+        /* obtiene todos los puntos y los resetea a blanco " " */
+        document.querySelectorAll(
+            ".errorNombre,.errorAsunto,.errorMensaje,.resultado"
+          ).forEach((punto) => (punto.innerHTML = ""));
+
+        /* obtiene los inputs y textarea, para mas adelante obtener sus valores */
+        let datos = document.querySelectorAll("input, textarea");
+
+        /* se crean array vacio para guardar los valores de los datos */
+        let datosValues = [];
+        /* recorremos los datos uno por uno para rescatar los valores, los cuales 
+            evaluo contra el regex, si cumple, se guarda, sino se obtiene el elemento
+            hermano y se le añade un innerHTML = msg */
+        for (let i = 0; i < datos.length; i++) {
+          if (/^[a-zA-Z\s]+$/.test(datos[i].value)) {
+            datosValues.push(datos[i].value);
+          } else {
+            datos[i].nextElementSibling.innerHTML = "Asunto es Requerido";
+          }
+        }
+        /* se evalua el largo del array datosValues, ya que solo con valor = 3 pasa */
+        if (datosValues.length > 2) {
+          /* en caso de exito se introcude un msg en resultado y se limpian los datos */
+          document.querySelector(
+            ".resultado"
+          ).innerHTML = `<h1>Mensaje enviado con exito!!!</h1>`;
+          evento.target.reset();
+        }
+      });
+    </script>
+  </body>
+</html>
